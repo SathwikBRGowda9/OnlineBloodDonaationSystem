@@ -11,7 +11,7 @@ import com.example.demo.dto.response.BloodResponseDTO;
 
 @RestController
 @RequestMapping("/api/requests")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"})
 public class RequestController {
 
     @Autowired

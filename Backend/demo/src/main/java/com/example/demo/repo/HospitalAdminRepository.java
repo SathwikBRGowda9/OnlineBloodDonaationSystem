@@ -6,5 +6,5 @@ import com.example.demo.entity.HospitalAdmin;
 
 public interface HospitalAdminRepository extends JpaRepository<HospitalAdmin, Long> {
 
-    Optional<HospitalAdmin> findByUsername(String username);
+    Optional<HospitalAdmin> findByEmail(String email);
 }

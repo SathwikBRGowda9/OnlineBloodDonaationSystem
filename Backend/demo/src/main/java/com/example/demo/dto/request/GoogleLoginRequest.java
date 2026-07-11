@@ -5,7 +5,9 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthRequest {
+public class GoogleLoginRequest {
+    private String googleId;
     private String email;
-    private String password;
+    private String name;
+    private String profilePicture;
 }

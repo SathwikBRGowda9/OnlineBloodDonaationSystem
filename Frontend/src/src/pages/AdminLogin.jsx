@@ -2,10 +2,10 @@ import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function AdminLogin() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const usernameRef = useRef(null);
+  const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
   const navigate = useNavigate();
@@ -14,8 +14,8 @@ export default function AdminLogin() {
   // 🔐 LOGIN
   /////////////////////////////////////////////////////////
   const handleLogin = async () => {
-    if (!username || !password) {
-      alert("⚠️ Please enter username & password");
+    if (!email || !password) {
+      alert("⚠️ Please enter email & password");
       return;
     }
 
@@ -25,7 +25,7 @@ export default function AdminLogin() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await res.json();
@@ -44,7 +44,7 @@ export default function AdminLogin() {
   /////////////////////////////////////////////////////////
   // ⌨️ ENTER HANDLING
   /////////////////////////////////////////////////////////
-  const handleUsernameEnter = (e) => {
+  const handleEmailEnter = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
       passwordRef.current.focus(); // 👉 move to password
@@ -64,24 +64,31 @@ export default function AdminLogin() {
   return (
     <div style={styles.container}>
       <div style={styles.card}>
+        <div style={styles.headerRow}>
+          <div>
+            <p style={styles.smallLabel}>Admin Access</p>
+            <h2 style={styles.title}>Admin Login</h2>
+          </div>
+          <div style={styles.statusPill}>Premium</div>
+        </div>
 
-        <h2 style={styles.title}>🛡️ Admin Login</h2>
+        <p style={styles.subtitle}>
+          Secure sign in to manage donor records and dashboard controls.
+        </p>
 
-        {/* 👤 Username */}
         <div style={styles.inputBox}>
-          <span style={styles.icon}>👤</span>
+          <span style={styles.icon}>�</span>
           <input
-            ref={usernameRef}
-            type="text"
-            placeholder="Username"
+            ref={emailRef}
+            type="email"
+            placeholder="Email"
             style={styles.input}
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            onKeyDown={handleUsernameEnter}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            onKeyDown={handleEmailEnter}
           />
         </div>
 
-        {/* 🔒 Password */}
         <div style={styles.inputBox}>
           <span style={styles.icon}>🔒</span>
           <input
@@ -96,11 +103,10 @@ export default function AdminLogin() {
         </div>
 
         <button style={styles.button} onClick={handleLogin}>
-          Login 🚀
+          Sign In
         </button>
       </div>
 
-      {/* 🔥 Animations */}
       <style>
         {`
           @keyframes gradientMove {
@@ -110,13 +116,13 @@ export default function AdminLogin() {
           }
 
           @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(24px); }
             to { opacity: 1; transform: translateY(0); }
           }
 
           button:hover {
-            transform: scale(1.07);
-            box-shadow: 0 0 20px rgba(255,0,0,0.6);
+            transform: translateY(-1px) scale(1.02);
+            box-shadow: 0 18px 40px rgba(248,113,113,0.28);
           }
         `}
       </style>
@@ -130,45 +136,84 @@ export default function AdminLogin() {
 
 const styles = {
   container: {
-    height: "100vh",
+    minHeight: "100vh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    background: "linear-gradient(270deg, #ff4d4d, #b71c1c, #7f0000)",
-    backgroundSize: "400% 400%",
-    animation: "gradientMove 6s ease infinite",
+    padding: "24px",
+    background:
+      "linear-gradient(135deg, #050816 0%, #111827 35%, #0f172a 100%)",
+    overflow: "hidden",
+    color: "#f8fafc",
   },
 
   card: {
-    padding: "70px", // 🔥 increased size
-    borderRadius: "25px",
-    width: "450px",
-    textAlign: "center",
-    background: "rgba(255,255,255,0.2)",
-    backdropFilter: "blur(15px)",
-    boxShadow: "0 20px 50px rgba(0,0,0,0.4)",
-    animation: "fadeIn 1s ease",
+    width: "100%",
+    maxWidth: "460px",
+    padding: "44px 40px",
+    borderRadius: "30px",
+    background: "rgba(15, 23, 42, 0.92)",
+    border: "1px solid rgba(148,163,184,0.14)",
+    boxShadow: "0 35px 90px rgba(15,23,42,0.35)",
+    backdropFilter: "blur(20px)",
+    animation: "fadeIn 0.9s ease forwards",
+  },
+
+  headerRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    gap: "16px",
+    marginBottom: "22px",
+  },
+
+  smallLabel: {
+    margin: 0,
+    fontSize: "0.82rem",
+    letterSpacing: "0.18em",
+    textTransform: "uppercase",
+    color: "#38bdf8",
   },
 
   title: {
-    marginBottom: "30px",
-    fontSize: "30px",
-    color: "#fff",
+    margin: "10px 0 0",
+    fontSize: "2.6rem",
+    lineHeight: 1.05,
+    fontWeight: 800,
+    color: "#f8fafc",
+  },
+
+  statusPill: {
+    padding: "10px 16px",
+    borderRadius: "999px",
+    background: "rgba(56,189,248,0.16)",
+    color: "#38bdf8",
+    fontWeight: 700,
+    fontSize: "0.85rem",
+    alignSelf: "flex-start",
+  },
+
+  subtitle: {
+    margin: "0 0 28px",
+    color: "rgba(226,232,240,0.75)",
+    lineHeight: 1.8,
+    fontSize: "1rem",
   },
 
   inputBox: {
     display: "flex",
     alignItems: "center",
-    background: "rgba(255,255,255,0.3)",
-    borderRadius: "12px",
-    margin: "15px 0",
-    padding: "15px",
+    gap: "14px",
+    padding: "16px 18px",
+    borderRadius: "18px",
+    background: "rgba(255,255,255,0.06)",
+    border: "1px solid rgba(148,163,184,0.12)",
+    marginBottom: "18px",
   },
 
   icon: {
-    marginRight: "10px",
-    fontSize: "20px",
-    color: "#fff",
+    fontSize: "1.1rem",
+    color: "#38bdf8",
   },
 
   input: {
@@ -176,21 +221,22 @@ const styles = {
     border: "none",
     outline: "none",
     background: "transparent",
-    fontSize: "18px",
-    color: "#fff",
+    color: "#f8fafc",
+    fontSize: "1rem",
+    minWidth: "0",
   },
 
   button: {
-    marginTop: "20px",
-    padding: "16px",
+    marginTop: "12px",
     width: "100%",
-    borderRadius: "12px",
+    padding: "16px 18px",
+    borderRadius: "18px",
     border: "none",
-    background: "linear-gradient(45deg, #ff4d4d, #d32f2f)",
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: "18px",
+    background: "linear-gradient(135deg, #38bdf8, #0ea5e9)",
+    color: "#020617",
+    fontSize: "1rem",
+    fontWeight: 700,
     cursor: "pointer",
-    transition: "0.3s",
+    transition: "transform 0.2s ease, box-shadow 0.2s ease",
   },
 };

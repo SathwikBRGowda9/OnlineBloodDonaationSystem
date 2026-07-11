@@ -15,9 +15,15 @@ public class User {
     private Long id;
 
     @Column(unique = true)
-    private String username;
+    private String email;
 
     private String password;
 
     private String role = "USER"; // Default role
+    
+    // Google OAuth fields
+    private String googleId;
+    private String name;
+    private String profilePicture;
+    private String loginProvider; // "email" or "google"
 }

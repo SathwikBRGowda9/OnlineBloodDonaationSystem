@@ -7,9 +7,9 @@ export default function Services() {
 
   useEffect(() => {
     fetch("http://localhost:8080/api/requests")
-      .then(res => res.json())
-      .then(data => setRequests(data))
-      .catch(err => console.error(err));
+      .then((res) => res.json())
+      .then((data) => setRequests(data))
+      .catch((err) => console.error(err));
   }, []);
 
   const handleDonate = (r) => {
@@ -29,7 +29,20 @@ export default function Services() {
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.heading}>🏥 Hospitals Need Blood</h2>
+      <div style={styles.introBanner}>
+        <div>
+          <p style={styles.pretitle}>Hospital Support</p>
+          <h2 style={styles.heading}>Hospitals Need Blood</h2>
+          <p style={styles.ingress}>
+            Discover urgent blood requests from nearby hospitals and help save
+            lives today.
+          </p>
+        </div>
+        <div style={styles.statsChip}>
+          <span style={styles.statsLabel}>Active Requests</span>
+          <strong style={styles.statsValue}>{requests.length}</strong>
+        </div>
+      </div>
 
       <div style={styles.grid}>
         {requests.map((r, index) => (
@@ -38,37 +51,38 @@ export default function Services() {
             style={{
               ...styles.card,
               animation: `fadeIn 0.6s ease forwards`,
-              animationDelay: `${index * 0.1}s`,
+              animationDelay: `${index * 0.08}s`,
             }}
           >
             <div style={styles.imageWrapper}>
               <img
-                src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5"
+                src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=900&q=80"
                 alt="hospital"
                 style={styles.image}
               />
             </div>
 
             <h3 style={styles.name}>{r.hospitalName}</h3>
-
-            <p><b>Patient:</b> {r.patientName}</p>
-            <p>
-              <b>Blood:</b>{" "}
+            <div style={styles.detailRow}>
+              <span style={styles.detailLabel}>Patient</span>
+              <span style={styles.detailValue}>{r.patientName}</span>
+            </div>
+            <div style={styles.detailRow}>
+              <span style={styles.detailLabel}>Blood Type</span>
               <span style={styles.blood}>{r.bloodGroup}</span>
-            </p>
-            <p><b>City:</b> {r.city}</p>
+            </div>
+            <div style={styles.detailRow}>
+              <span style={styles.detailLabel}>City</span>
+              <span style={styles.detailValue}>{r.city}</span>
+            </div>
 
-            <button
-              style={styles.button}
-              onClick={() => handleDonate(r)}
-            >
+            <button style={styles.button} onClick={() => handleDonate(r)}>
               Donate ❤️
             </button>
           </div>
         ))}
       </div>
 
-      {/* 🔥 GLOBAL ANIMATIONS */}
       <style>
         {`
           @keyframes fadeIn {
@@ -83,16 +97,16 @@ export default function Services() {
           }
 
           .card-hover:hover {
-            transform: translateY(-10px) scale(1.02);
+            transform: translateY(-8px) scale(1.01);
           }
 
-          img:hover {
-            transform: scale(1.1);
-          }
-
-          button:hover {
+          .image-hover:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(255,0,0,0.6);
+          }
+
+          .button-hover:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 18px 40px rgba(220, 38, 38, 0.24);
           }
         `}
       </style>
@@ -108,73 +122,149 @@ const styles = {
   container: {
     padding: "30px",
     minHeight: "100vh",
+    background:
+      "linear-gradient(135deg, #0f172a 0%, #111827 45%, #1e293b 100%)",
+    color: "#e2e8f0",
+    fontFamily: "Inter, system-ui, sans-serif",
+  },
 
-    // 🔥 Animated Gradient Background
-    background: "linear-gradient(270deg, #f8f9fa, #e3f2fd, #fce4ec)",
-    backgroundSize: "400% 400%",
-    animation: "gradientMove 10s ease infinite"
+  introBanner: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: "20px",
+    padding: "30px",
+    borderRadius: "28px",
+    background: "rgba(15, 23, 42, 0.86)",
+    border: "1px solid rgba(148, 163, 184, 0.18)",
+    boxShadow: "0 40px 80px rgba(15,23,42,0.35)",
+    marginBottom: "32px",
+  },
+
+  pretitle: {
+    margin: 0,
+    color: "#38bdf8",
+    fontSize: "0.85rem",
+    letterSpacing: "0.24em",
+    textTransform: "uppercase",
   },
 
   heading: {
+    margin: "10px 0 0",
+    fontSize: "2.8rem",
+    lineHeight: 1.05,
+    fontWeight: 800,
+    color: "#f8fafc",
+  },
+
+  ingress: {
+    margin: "16px 0 0",
+    maxWidth: "620px",
+    color: "rgba(226, 232, 240, 0.72)",
+    fontSize: "1rem",
+    lineHeight: 1.8,
+  },
+
+  statsChip: {
+    minWidth: "180px",
+    padding: "20px 24px",
+    borderRadius: "22px",
+    border: "1px solid rgba(56,189,248,0.18)",
+    background: "rgba(14, 165, 233, 0.12)",
     textAlign: "center",
-    color: "#d32f2f",
-    marginBottom: "30px",
-    fontSize: "30px",
-    fontWeight: "bold"
+    boxShadow: "inset 0 0 0 1px rgba(56,189,248,0.08)",
+  },
+
+  statsLabel: {
+    display: "block",
+    color: "rgba(226,232,240,0.8)",
+    fontSize: "0.85rem",
+    letterSpacing: "0.16em",
+    textTransform: "uppercase",
+  },
+
+  statsValue: {
+    display: "block",
+    marginTop: "12px",
+    fontSize: "2.6rem",
+    fontWeight: 800,
+    color: "#fff",
   },
 
   grid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-    gap: "25px"
+    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+    gap: "24px",
   },
 
   card: {
-    background: "rgba(255,255,255,0.2)", // 🔥 glass effect
-    backdropFilter: "blur(10px)",
-    borderRadius: "18px",
-    padding: "15px",
-    textAlign: "center",
-    boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
-    transition: "0.4s",
-    cursor: "pointer"
+    background: "rgba(15, 23, 42, 0.92)",
+    borderRadius: "24px",
+    padding: "24px",
+    boxShadow: "0 30px 60px rgba(0,0,0,0.25)",
+    border: "1px solid rgba(148, 163, 184, 0.1)",
+    transition: "transform 0.3s ease, box-shadow 0.3s ease",
   },
 
   imageWrapper: {
     overflow: "hidden",
-    borderRadius: "12px"
+    borderRadius: "20px",
+    marginBottom: "20px",
+    border: "1px solid rgba(148, 163, 184, 0.12)",
   },
 
   image: {
     width: "100%",
-    height: "170px",
+    height: "180px",
     objectFit: "cover",
-    transition: "0.4s"
+    transition: "transform 0.4s ease",
+    display: "block",
   },
 
   name: {
-    margin: "10px 0",
-    color: "#222",
-    fontSize: "19px",
-    fontWeight: "bold"
+    margin: "0 0 12px",
+    fontSize: "1.35rem",
+    color: "#f8fafc",
+    fontWeight: 700,
+  },
+
+  detailRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    gap: "12px",
+    padding: "10px 0",
+    borderBottom: "1px solid rgba(148, 163, 184, 0.08)",
+    color: "rgba(226,232,240,0.86)",
+    fontSize: "0.96rem",
+  },
+
+  detailLabel: {
+    color: "rgba(148,163,184,0.95)",
+    fontWeight: 600,
+  },
+
+  detailValue: {
+    color: "#ffffff",
+    fontWeight: 700,
   },
 
   blood: {
-    color: "#e53935",
-    fontWeight: "bold",
-    fontSize: "17px"
+    color: "#f97316",
+    fontWeight: 700,
   },
 
   button: {
-    marginTop: "12px",
-    padding: "12px",
+    marginTop: "20px",
     width: "100%",
-    background: "linear-gradient(45deg, #ff4d4d, #d32f2f)",
-    color: "#fff",
+    padding: "16px",
+    borderRadius: "16px",
     border: "none",
-    borderRadius: "10px",
+    background: "linear-gradient(135deg, #38bdf8, #0ea5e9)",
+    color: "#020617",
+    fontWeight: 700,
+    fontSize: "1rem",
     cursor: "pointer",
-    fontWeight: "bold",
-    transition: "0.3s"
-  }
+    transition: "transform 0.2s ease, box-shadow 0.2s ease",
+  },
 };

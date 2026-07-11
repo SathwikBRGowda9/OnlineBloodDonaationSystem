@@ -7,6 +7,7 @@ import com.example.demo.entity.HospitalAdmin;
 import com.example.demo.repo.HospitalAdminRepository;
 import com.example.demo.dto.request.HospitalLoginRequest;
 import com.example.demo.dto.request.HospitalRegisterRequest;
+import com.example.demo.dto.request.HospitalForgotPasswordRequest;
 import com.example.demo.dto.response.HospitalLoginResponse;
 
 @Service
@@ -20,13 +21,13 @@ public class HospitalAdminService {
     /////////////////////////////////////////////////////////
     public String register(HospitalRegisterRequest request) {
 
-        if (repo.findByUsername(request.getUsername()).isPresent()) {
-            return "Username already exists ❌";
+        if (repo.findByEmail(request.getEmail()).isPresent()) {
+            return "Email already exists ❌";
         }
 
         HospitalAdmin admin = new HospitalAdmin();
         admin.setHospitalName(request.getHospitalName());
-        admin.setUsername(request.getUsername());
+        admin.setEmail(request.getEmail());
         admin.setPassword(request.getPassword());
 
         repo.save(admin);
@@ -39,12 +40,12 @@ public class HospitalAdminService {
     /////////////////////////////////////////////////////////
     public HospitalLoginResponse login(HospitalLoginRequest request) {
 
-        HospitalAdmin admin = repo.findByUsername(request.getUsername()).orElse(null);
+        HospitalAdmin admin = repo.findByEmail(request.getEmail()).orElse(null);
 
         HospitalLoginResponse response = new HospitalLoginResponse();
 
         if (admin == null) {
-            response.setMessage("User not found ❌");
+            response.setMessage("Email not found ❌");
             return response;
         }
 
@@ -56,5 +57,25 @@ public class HospitalAdminService {
         }
 
         return response;
+    }
+
+    /////////////////////////////////////////////////////////
+    // 🔄 FORGOT PASSWORD
+    /////////////////////////////////////////////////////////
+    public String forgotPassword(HospitalForgotPasswordRequest request) {
+        HospitalAdmin admin = repo.findByEmail(request.getEmail()).orElse(null);
+
+        if (admin == null) {
+            return "Hospital email not found ❌";
+        }
+
+        if (!admin.getHospitalName().equals(request.getHospitalName())) {
+            return "Hospital name does not match our records ❌";
+        }
+
+        admin.setPassword(request.getNewPassword());
+        repo.save(admin);
+
+        return "Password reset successfully ✅";
     }
 }

@@ -41,7 +41,8 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of("http://localhost:5173"));
+        config.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174", "http://localhost:5175"));
+        config.setAllowedOriginPatterns(List.of("http://localhost:*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
@@ -67,7 +68,8 @@ public class SecurityConfig {
         "/admin/login",
         "/api/hospital/**",
         "/api/requests/**",
-        "/api/donors/**"   // 🔥 VERY IMPORTANT
+        "/api/donors/**",
+        "/api/payments/**"   // 🔥 PAYMENT ACCESS
     ).permitAll()
 
                     // 🔐 Secure others
